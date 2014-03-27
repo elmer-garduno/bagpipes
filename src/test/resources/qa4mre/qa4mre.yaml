@@ -1,0 +1,114 @@
+configuration: 
+  name: qa4mre-13-test-main
+  author: ziy
+  
+#persistence-provider:
+#  inherit: persistence.local-persistence-provider
+
+collection-reader:
+  inherit: collectionreaders.CollectionReaderDescriptor
+#  params: 
+#    dataset: QA4MRE-13-test-main
+#    INPUT_DIR: data/13-test-main/
+
+pipeline:
+  # question and document annotations: data -> XMIs
+  - phase: TextSegmenter
+    options: 
+      - inherit: annotators.TextSegmenter
+
+  - phase: StanfordSentenceAnnotator
+    options: 
+      - inherit: annotators.StanfordSentenceAnnotator
+
+  - phase: NoiseFilter
+    options: 
+      - inherit: annotators.NoiseFilter
+
+#  - phase: StanfordNLPAnnotator
+#    options: 
+#      - pipeline:
+#          - inherit: annotators.StanfordNLPAnnotator
+#          - inherit: annotators.StanfordQuestionNLPAnnotator
+
+#  - inherit: ecd.phase
+#    name: PhraseAnnotator
+#    options: |
+#      - pipeline:
+#          - inherit: annotators.PhraseAnnotator
+#          - inherit: annotators.QuestionPhraseAnnotator
+
+#  - inherit: ecd.phase
+#    name: NEAnnotator
+#    options: |
+#      - pipeline:
+#          - inherit: annotators.NEAnnotator
+#          - inherit: annotators.QuestionNEAnnotator
+
+#  - inherit: ecd.phase
+#    name: SynonymAnnotator
+#    options: |
+#      - pipeline:
+#          - inherit: annotators.SynonymAnnotator
+#          - inherit: annotators.QASynonymAnnotator
+##      - inherit: base.noop
+
+#  - inherit: ecd.phase
+#    name: WikiSynonymAnnotator
+#    options: |
+#      - pipeline:
+#          - inherit: annotators.WikiSynonymAnnotator
+#          - inherit: annotators.WikiQASynonymAnnotator
+##      - inherit: base.noop
+
+#  - inherit: consumers.CasConsumerDescriptor
+#    OutputDirectory: results/13-test-main/final-xmis
+
+#  # indexing
+#  - inherit: ecd.phase
+#    name: SolrIndexer
+#    options: |
+#      - inherit: annotators.SolrIndexer
+
+#  # answer ranking and merging: XMIs -> results
+#  - inherit: ecd.phase
+#    options: |
+#    name: QuestionCandSentSimilarityMatcher
+#      - inherit: annotators.QuestionCandSentSimilarityMatcher
+#      - inherit: annotators.QuestionCandSentDependencyMatcher
+#      - pipeline:
+#          - inherit: annotators.QuestionCandSentSimilarityMatcher
+#          - inherit: annotators.QuestionCandSentDependencyMatcher
+#      - pipeline:
+#          - inherit: annotators.QuestionCandSentSimilarityMatcher
+#          - inherit: annotators.QuestionCandSentSynonymMatcher
+#      - pipeline:
+#          - inherit: annotators.QuestionCandSentSimilarityMatcher
+#          - inherit: annotators.QuestionCandSentDependencyMatcher
+#          - inherit: annotators.QuestionCandSentSynonymMatcher
+
+#  - inherit: ecd.phase
+#    name: AnswerChoiceCandAnsSimilarityScorer
+#    options: |
+#      - inherit: annotators.AnswerChoiceCandAnsSimilarityScorer
+#      - inherit: annotators.AnswerChoiceCandAnsPMIScorer
+#      - pipeline:
+#          - inherit: annotators.AnswerChoiceCandAnsSimilarityScorer
+#          - inherit: annotators.AnswerChoiceCandAnsPMIScorer
+#      - pipeline:
+#          - inherit: annotators.AnswerChoiceCandAnsSimilarityScorer
+#          - inherit: annotators.AnswerChoiceCandAnsSynonymScorer
+#      - pipeline:
+#          - inherit: annotators.AnswerChoiceCandAnsSimilarityScorer
+#          - inherit: annotators.AnswerChoiceCandAnsSynonymScorer
+#          - inherit: annotators.AnswerChoiceCandAnsPMIScorer
+
+#  - inherit: ecd.phase
+#    name: AnswerChoiceCandAnsSimilarityScorer
+#    options: |
+#      - inherit: annotators.AnswerSelectionByKCandVoting
+#      - inherit: annotators.AnswerSelectionByKCandAggregation
+
+#  # output format
+#  - inherit: consumers.NaiveScorerCasConsumer
+#    OUTPUT_DIR: results/13-test-main/final-outputs

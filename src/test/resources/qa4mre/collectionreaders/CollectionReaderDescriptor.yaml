@@ -1,0 +1,4 @@
+collection-class: edu.cmu.lti.qalab.collectionreaders.QA4MRECseCollectionReader
+
+#persistence-provider:
+#  inherit: persistence.local-persistence-provider
